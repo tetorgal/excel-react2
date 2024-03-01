@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import {Button, Spinner} from 'reactstrap';
 import * as XLSX from 'xlsx';
 
@@ -34,7 +34,6 @@ const BotonExcelDefault = ({ asistencia}) => {
         )}
       </>
     )
-  }
-}
+  };
 
 export default BotonExcelDefault

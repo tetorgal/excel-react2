@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, {useState } from 'react';
 import {Button, Spinner} from 'reactstrap';
 import * as XLSX from 'xlsx';
 
@@ -20,6 +20,18 @@ const BotonExcelEstilizado = ({asistencia}) => {
             C: "1",
             D: "2",
             E: "3",
+            F: "4",
+            G: "5",
+            H: "6",
+            I: "7",
+            J: "8",
+            K: "9",
+            L: "10",
+            M: "11",
+            N: "12",
+            Ñ: "13",
+            O: "14",
+            P: "15",
 
         },
     ];
@@ -30,7 +42,19 @@ const BotonExcelEstilizado = ({asistencia}) => {
            B: asistencia.nombre,
            C: asistencia.uno,
            D: asistencia.dos,
-           E: asistencia.tres, 
+           E: asistencia.tres,
+           F: asistencia.cuatro,
+           G: asistencia.cinco,
+           H: asistencia.seis,
+           I: asistencia.siete,
+           J: asistencia.ocho,
+           K: asistencia.nueve,
+           L: asistencia.diez,
+           M: asistencia.once,
+           N: asistencia.doce,
+           Ñ: asistencia.trece,
+           O: asistencia.catorce,
+           P: asistencia.quince,
         });
     });
 
