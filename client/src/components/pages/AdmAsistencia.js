@@ -8,8 +8,8 @@ import {
   Container,
   Table,
 } from "reactstrap";
-import BotonExcelDefault from "./Asistencia/BotonExcelDefault";
-import BotonExcelEstilizado from "./Asistencia/BotonExcelEstilizado";
+import BotonExcelDefault from "../Asistencia/BotonExcelDefault";
+import BotonExcelEstilizado from "../Asistencia/BotonExcelEstilizado";
 
 const AdmAsistencia = () => {
   const [asistencia, setAsistencia] = useState([]);
