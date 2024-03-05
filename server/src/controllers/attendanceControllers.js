@@ -1,5 +1,6 @@
 const XlsxPopulate = require("xlsx-populate");
 const connection = require("./db");
+const exceljs = require("exceljs");
 
 exports.getAttendanceData = async (req, res) => {
   try {
@@ -76,5 +77,58 @@ exports.updateAttendance = async (req, res) => {
   } catch (error) {
     console.error("Error al actualizar la asistencia:", error);
     res.status(500).json({ error: "Error al actualizar la asistencia" });
+  }
+};
+
+exports.exportToExcel = async (req, res) => {
+  const { asistencia } = req.body;
+
+  try {
+    // Crear un nuevo libro de Excel
+    const workbook = new exceljs.Workbook();
+    const worksheet = workbook.addWorksheet("Asistencia");
+
+    // Definir las columnas en la hoja de cálculo
+    const columns = [
+      { header: "ID", key: "id", width: 10 },
+      { header: "Apellido", key: "apellido", width: 20 },
+      { header: "Nombre", key: "nombre", width: 20 },
+    ];
+
+    for (let i = 1; i <= 31; i++) {
+      const dayColumn = { header: `Día ${i}`, key: `dia${i}`, width: 10 };
+      columns.push(dayColumn);
+    }
+
+    worksheet.columns = columns;
+
+    // Agregar los datos de asistencia a la hoja de cálculo
+    asistencia.forEach((asistenciaItem) => {
+      const rowData = {
+        id: asistenciaItem.id,
+        apellido: asistenciaItem.apellido,
+        nombre: asistenciaItem.nombre,
+        ...asistenciaItem, // Esto añade los datos de los días directamente al objeto de fila (asumiendo que asistenciaItem ya tiene las claves "dia1", "dia2", ..., "dia31")
+      };
+      worksheet.addRow(rowData);
+    });
+
+    // Configurar el tipo de contenido de la respuesta HTTP como un archivo Excel
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=asistencia.xlsx"
+    );
+
+    // Escribir el libro de Excel en la respuesta HTTP
+    await workbook.xlsx.write(res);
+
+    console.log("Exportación a Excel completada");
+  } catch (error) {
+    console.error("Error al exportar a Excel:", error);
+    res.status(500).json({ error: "Error al exportar a Excel" });
   }
 };

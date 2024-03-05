@@ -78,7 +78,7 @@ const AdmAsistencia = () => {
                 Guardar Cambios
               </Button>
               <BotonExcelDefault asistencia={asistencia} />
-              <BotonExcelEstilizado asistencia={asistencia} />
+              {/* <BotonExcelEstilizado asistencia={asistencia} /> */}
             </div>
           </div>
         </CardHeader>
