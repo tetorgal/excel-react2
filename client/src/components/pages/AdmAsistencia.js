@@ -43,7 +43,7 @@ const AdmAsistencia = () => {
   };
   const guardarCambioIndividual = (id, columna, valor) => {
     axios
-      .post("http://127.0.0.1:5000/asistencias/update-asistencia", {
+      .put("http://127.0.0.1:5000/asistencias/update-asistencia", {
         id: id,
         columna: columna,
         valor: valor,
