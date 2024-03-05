@@ -22,6 +22,7 @@ const AdmAsistencia = () => {
         setAsistencia(response.data); // Establecer los datos de asistencia en el estado
       })
       .catch((error) => {
+        alert(error);
         console.error("Error al obtener los datos de asistencia:", error);
       });
   }, []);

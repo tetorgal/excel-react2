@@ -13,7 +13,7 @@ exports.getAttendanceData = async (req, res) => {
 
     res.json(values);
   } catch (error) {
-    console.error("Error al leer el archivo de Excel:", error);
+    console.error("Error al leer el archivo de Excel :/:", error);
     res.status(500).json({ error: "Error al leer el archivo de Excel" });
   }
 };
