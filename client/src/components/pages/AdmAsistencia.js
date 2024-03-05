@@ -33,34 +33,41 @@ const AdmAsistencia = () => {
   }, []);
 
   const handleInputChange = (id, columna, valor) => {
-    setEdits({ ...edits, [id]: { ...edits[id], [columna]: valor } });
+    setEdits((prevState) => ({
+      ...prevState,
+      [id]: {
+        ...prevState[id],
+        [columna]: valor,
+      },
+    }));
   };
-
-  const guardarCambios = () => {
-    // Actualiza el estado de asistencia con los cambios editados
-    const asistenciaActualizada = asistencia.map(item => {
-      if (edits[item.id]) {
-        return {
-          ...item,
-          ...edits[item.id]
-        };
-      } else {
-        return item;
-      }
-    });
-
+  const guardarCambioIndividual = (id, columna, valor) => {
     axios
-      .post("http://127.0.0.1:5000/asistencias/update-asistencias", asistenciaActualizada)
+      .post("http://127.0.0.1:5000/asistencias/update-asistencia", {
+        id: id,
+        columna: columna,
+        valor: valor,
+      })
       .then((response) => {
-        console.log("Cambios guardados exitosamente:", response.data);
-        toast.success("Cambios guardados exitosamente");
-        setAsistencia(asistenciaActualizada); // Actualiza el estado de asistencia con los cambios guardados
-        setEdits({}); 
+        console.log("Cambio guardado exitosamente:", response.data);
+        toast.success("Cambio guardado exitosamente");
       })
       .catch((error) => {
-        console.error("Error al guardar los cambios:", error);
-        toast.error("Error al guardar los cambios");
+        console.error("Error al guardar el cambio:", error);
+        toast.error("Error al guardar el cambio");
       });
+  };
+  const guardarCambios = () => {
+    for (const [id, cambios] of Object.entries(edits)) {
+      for (const [columna, valor] of Object.entries(cambios)) {
+        guardarCambioIndividual(id, columna, valor);
+      }
+    }
+    setEdits({});
+  };
+
+  const mostrarIdFila = (id) => {
+    toast.info(`ID de la fila: ${id}`);
   };
 
   return (
@@ -110,6 +117,7 @@ const AdmAsistencia = () => {
                             e.target.innerText
                           )
                         }
+                        onClick={() => mostrarIdFila(asistenciaItem.id)}
                       >
                         {asistenciaItem[`dia${index + 1}`]}
                       </td>

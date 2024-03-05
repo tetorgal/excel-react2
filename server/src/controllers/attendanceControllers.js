@@ -54,16 +54,19 @@ exports.getAllAttendance = async (req, res) => {
       .json({ error: "Error al recuperar los datos de asistencia" });
   }
 };
-
 exports.updateAttendance = async (req, res) => {
-  const { id, edits } = req.body;
+  const { asistencia } = req.body;
 
   try {
     console.log("Actualizando asistencia...");
 
-    for (const [dia, valor] of Object.entries(edits)) {
-      const query = `UPDATE asistencias SET ${dia} = ? WHERE id = ?`;
-      await connection.query(query, [valor, id]);
+    for (const item of asistencia) {
+      const id = item.id;
+      // delete item.id; // Elimina el campo "id" del objeto
+      const query = `UPDATE asistencias SET ${Object.keys(item)
+        .map((key) => `${key} = '${item[key]}'`)
+        .join(", ")} WHERE id = ?`;
+      await connection.query(query, [id]);
     }
 
     console.log("Asistencia actualizada correctamente");
