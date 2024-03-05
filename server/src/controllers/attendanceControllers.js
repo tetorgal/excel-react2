@@ -56,6 +56,7 @@ exports.getAllAttendance = async (req, res) => {
 };
 exports.updateAttendance = async (req, res) => {
   const { asistencia } = req.body;
+  const conn = await connection;
 
   try {
     console.log("Actualizando asistencia...");
@@ -64,9 +65,10 @@ exports.updateAttendance = async (req, res) => {
       const id = item.id;
       // delete item.id; // Elimina el campo "id" del objeto
       const query = `UPDATE asistencias SET ${Object.keys(item)
+        .filter((key) => key !== "id") // Excluir el campo "id" de la actualización
         .map((key) => `${key} = '${item[key]}'`)
         .join(", ")} WHERE id = ?`;
-      await connection.query(query, [id]);
+      await conn.query(query, [id]);
     }
 
     console.log("Asistencia actualizada correctamente");

@@ -41,29 +41,26 @@ const AdmAsistencia = () => {
       },
     }));
   };
-  const guardarCambioIndividual = (id, columna, valor) => {
+
+  const guardarCambios = () => {
+    const cambiosAsistencia = Object.keys(edits).map((id) => ({
+      id,
+      ...edits[id],
+    }));
+
     axios
-      .put("http://127.0.0.1:5000/asistencias/update-asistencia", {
-        id: id,
-        columna: columna,
-        valor: valor,
+      .put("http://127.0.0.1:5000/asistencias/update-asistencias", {
+        asistencia: cambiosAsistencia,
       })
       .then((response) => {
-        console.log("Cambio guardado exitosamente:", response.data);
-        toast.success("Cambio guardado exitosamente");
+        console.log("Cambios guardados exitosamente:", response.data);
+        toast.success("Cambios guardados exitosamente");
+        setEdits({});
       })
       .catch((error) => {
-        console.error("Error al guardar el cambio:", error);
-        toast.error("Error al guardar el cambio");
+        console.error("Error al guardar los cambios:", error);
+        toast.error("Error al guardar los cambios");
       });
-  };
-  const guardarCambios = () => {
-    for (const [id, cambios] of Object.entries(edits)) {
-      for (const [columna, valor] of Object.entries(cambios)) {
-        guardarCambioIndividual(id, columna, valor);
-      }
-    }
-    setEdits({});
   };
 
   const mostrarIdFila = (id) => {
