@@ -65,16 +65,16 @@ const AdmAsistencia = () => {
                     <td>
                       {asistencia.apellido} {asistencia.nombre}
                     </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td contentEditable={true}></td>
+                    <td contentEditable={true}></td>
+                    <td contentEditable={true}></td>
+                    <td contentEditable={true}></td>
+                    <td contentEditable={true}></td>
+                    <td contentEditable={true}></td>
+                    <td contentEditable={true}></td>
+                    <td contentEditable={true}></td>
+                    <td contentEditable={true}></td>
+                    <td contentEditable={true}></td>
                   </tr>
                 );
               })}
