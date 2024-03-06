@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { RiFileExcel2Fill } from "react-icons/ri";
+import { FaSave } from "react-icons/fa";
 
 import {
   Card,
@@ -14,6 +16,7 @@ import {
 } from "reactstrap";
 import BotonExcelDefault from "../Asistencia/BotonExcelDefault";
 import BotonExcelEstilizado from "../Asistencia/BotonExcelEstilizado";
+import { CSVLink, CSVDownload } from "react-csv";
 
 const AdmAsistencia = () => {
   const [asistencia, setAsistencia] = useState([]);
@@ -56,6 +59,7 @@ const AdmAsistencia = () => {
         console.log("Cambios guardados exitosamente:", response.data);
         toast.success("Cambios guardados exitosamente");
         setEdits({});
+        window.location.reload();
       })
       .catch((error) => {
         console.error("Error al guardar los cambios:", error);
@@ -69,28 +73,42 @@ const AdmAsistencia = () => {
 
   return (
     <Container className="pt-5">
-      <Card>
+      <Card className="w-full">
         <CardHeader>
           <div className="d-flex justify-content-between">
             <CardTitle>Lista de Asistencia</CardTitle>
             <div className="me-1">
-              <Button color="success" onClick={guardarCambios} className="me-2">
-                Guardar Cambios
+              <Button
+                color="secondary"
+                onClick={guardarCambios}
+                className="me-2"
+              >
+                <FaSave /> Guardar Cambios
               </Button>
-              <BotonExcelDefault asistencia={asistencia} />
-              {/* <BotonExcelEstilizado asistencia={asistencia} /> */}
+              <Button color="success" className="me-2">
+                <CSVLink
+                  data={asistencia}
+                  style={{ textDecoration: "none" }}
+                  className="text-white"
+                  filename="Asistencia.csv"
+                >
+                  <RiFileExcel2Fill /> Exportar
+                </CSVLink>
+              </Button>
             </div>
           </div>
         </CardHeader>
-        <CardBody className="scrolling">
+        <CardBody className="overflow-x-auto">
           <Table bordered hover>
             <thead className="bg-primary text-white">
               <tr>
-                <th>No. Asistencia</th>
-                <th>Nombre y Apellido</th>
+                <th className="w-16">No. Asistencia</th>
+                <th className="w-48">Nombre y Apellido</th>
                 {/* Renderizar las columnas de los días de asistencia */}
                 {[...Array(31).keys()].map((index) => (
-                  <th key={`dia${index + 1}`}>{`Dia ${index + 1}`}</th>
+                  <th key={`dia${index + 1}`} className="w-16">{`Dia ${
+                    index + 1
+                  }`}</th>
                 ))}
               </tr>
             </thead>
@@ -99,9 +117,7 @@ const AdmAsistencia = () => {
                 return (
                   <tr key={asistenciaItem.id}>
                     <td>{asistenciaItem.id}</td>
-                    <td>
-                      {asistenciaItem.apellido} {asistenciaItem.nombre}
-                    </td>
+                    <td>{`${asistenciaItem.apellido} ${asistenciaItem.nombre}`}</td>
                     {/* Renderizar las celdas editables para los días de asistencia */}
                     {[...Array(31).keys()].map((index) => (
                       <td
@@ -115,6 +131,7 @@ const AdmAsistencia = () => {
                           )
                         }
                         onClick={() => mostrarIdFila(asistenciaItem.id)}
+                        className="w-16"
                       >
                         {asistenciaItem[`dia${index + 1}`]}
                       </td>
